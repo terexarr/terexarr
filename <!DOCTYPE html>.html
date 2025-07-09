@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>บอกรักแฟน</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%);
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Sriracha', cursive;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+    }
+    .love-card {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(255, 105, 135, 0.2);
+      padding: 40px 24px;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+    .love-card::before {
+      content: "❤";
+      font-size: 100px;
+      color: #ffb6b9;
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.13;
+      pointer-events: none;
+    }
+    h1 {
+      color: #ff6f91;
+      margin-bottom: 16px;
+      font-size: 2.1rem;
+      letter-spacing: 1px;
+    }
+    p {
+      color: #333;
+      font-size: 1.2rem;
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+    button {
+      background: linear-gradient(90deg, #ff6f91 0%, #ffb6b9 100%);
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      padding: 12px 36px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-family: inherit;
+      box-shadow: 0 2px 8px rgba(255, 105, 135, 0.1);
+    }
+    button:hover {
+      background: linear-gradient(90deg, #ffb6b9 0%, #ff6f91 100%);
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255, 182, 185, 0.3);
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .popup-content {
+      background: #fff;
+      border-radius: 18px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(255, 105, 135, 0.15);
+      font-size: 1.5rem;
+      color: #ff6f91;
+      animation: pop 0.4s;
+      max-width: 90vw;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    /* Login Box Responsive */
+    #login-box {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #login-box > div {
+      width: 90vw;
+      max-width: 350px;
+    }
+    input[type="text"], input[type="password"] {
+      margin: 8px 0;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid #eee;
+      width: 90%;
+      font-family: inherit;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    @media (max-width: 500px) {
+      .love-card {
+        padding: 24px 6vw;
+        font-size: 1rem;
+      }
+      .popup-content {
+        padding: 18px 6vw;
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="login-box">
+    <div>
+      <h2 style="color:#ff6f91;">เข้าสู่ระบบ</h2>
+      <p style="color:#888;margin-bottom:12px;">กรุณาป้อนชื่อผู้ใช้และรหัสผ่านเพื่อเข้าเว็บบอกรักแฟน</p>
+      <input id="user" type="text" placeholder="ชื่อผู้ใช้">
+      <br>
+      <input id="pass" type="password" placeholder="รหัสผ่าน">
+      <br>
+      <button onclick="login()">เข้าสู่ระบบ</button>
+      <div id="login-error" style="color:red;margin-top:10px;display:none;">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</div>
+    </div>
+  </div>
+  <div id="main-content" style="display:none;">
+    <div class="love-card">
+      <h1>ถึงที่รักของฉัน</h1>
+      <p>เจี๊ยกกกก<br>ป๊ารักม๊าที่สุดเลยนะคะ ลิงอ้วนของเค้า 💖</p>
+      <button onclick="showLove()">เตกที่นี่</button>
+    </div>
+    <div class="popup" id="popup">
+      <div class="popup-content">
+        💗 รักม๊านะคะ จุ๊บๆ 💗<br>
+        <button onclick="closePopup()" style="margin-top:20px;">ปิด</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // ตั้งค่าชื่อผู้ใช้และรหัสผ่าน
+    const USER = "0102";
+    const PASS = "1312";
+    function login() {
+      const u = document.getElementById('user').value.trim();
+      const p = document.getElementById('pass').value.trim();
+      if(u === USER && p === PASS) {
+        document.getElementById('login-box').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+      } else {
+        document.getElementById('login-error').style.display = 'block';
+      }
+    }
+    function showLove() {
+      document.getElementById('popup').style.display = 'flex';
+    }
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+    // กด Enter เพื่อ Login ได้ด้วย
+    document.addEventListener('keydown', function(e){
+      if(document.getElementById('login-box').style.display !== 'none' && (e.key === "Enter" || e.keyCode === 13)){
+        login();
+      }
+    });
+  </script>
+</body>
+</html>
